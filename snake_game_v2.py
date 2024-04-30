@@ -43,11 +43,11 @@ def add_food(a):
     for _ in range(a):
         food_position.append(rand_tile())
 
-def grow():
-    global snake_position
+def grow(snake_position):
     global score
     score += 1
     snake_position.append([-1,-1])
+    return snake_position
 
 def render():
     global snake_element
@@ -64,16 +64,16 @@ def render():
     screen.blit(score_text, (10,10))
     pg.display.flip()
 
-def tile_check():
-    global food_position
-    global snake_position
+def tile_check(snake_position):
     if snake_position[0] in snake_position[1:]: start_game()
     elif snake_position[0] in food_position: 
-        grow()
+        snake_position = grow(snake_position) 
         food_position.remove(snake_position[0])
         add_food(1)
+        
 
 def buttons_check():
+    global snake_direction
     global snake_direction
     global fps
     global exited
@@ -88,15 +88,13 @@ def buttons_check():
             if event.key == pg.K_s: switch_snake_direction_to = 1
             if event.key == pg.K_a: switch_snake_direction_to = 2
             if event.key == pg.K_LSHIFT: fps = 2*FPS
-            if event.key == pg.K_q and CHEATS: grow()
+            if event.key == pg.K_q and CHEATS: snake_position = grow(snake_position)
             if event.key == pg.K_TAB and CHEATS: start_game()
         if event.type == pg.KEYUP and event.key == pg.K_LSHIFT: fps = FPS
     if snake_direction != switch_snake_direction_to and (snake_direction - switch_snake_direction_to)%2 != 0:
         snake_direction = switch_snake_direction_to
 
-def move_snake():
-    global snake_position
-    global snake_direction
+def move_snake(snake_position,snake_direction): 
     if len(snake_position) > 1:
         for current_element in range(len(snake_position)-1,0,-1):
             snake_position[current_element] = snake_position[current_element-1][:]
@@ -106,6 +104,7 @@ def move_snake():
         case 2: snake_position[0][0] += -1
         case 3: snake_position[0][1] += -1
     snake_position[0][0],snake_position[0][1] = snake_position[0][0]%(SIZEOFMAP*16),snake_position[0][1]%(SIZEOFMAP*9)
+    return snake_position
 
 class previous_results:
     def get_best_score():
@@ -151,8 +150,8 @@ while not exited:
 
     while running and not exited:
         buttons_check()
-        move_snake()
-        tile_check()
+        snake_position = move_snake(snake_position, snake_direction)
+        tile_check(snake_position)
         if running: render()
         clock.tick(fps)
 
