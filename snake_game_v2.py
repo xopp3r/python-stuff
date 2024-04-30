@@ -91,7 +91,6 @@ def buttons_check():
             if event.key == pg.K_q and CHEATS: grow()
             if event.key == pg.K_TAB and CHEATS: start_game()
         if event.type == pg.KEYUP and event.key == pg.K_LSHIFT: fps = FPS
-        
     if snake_direction != switch_snake_direction_to and (snake_direction - switch_snake_direction_to)%2 != 0:
         snake_direction = switch_snake_direction_to
 
