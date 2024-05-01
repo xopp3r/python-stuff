@@ -1,17 +1,13 @@
 import pygame as pg
 import random
 
-
 CHEATS = True #allows you to grow by 'q' and suicide by 'tab'
 SIZEOFMAP = 5 #
-RESOLUTION = 120 # 120: 1080p / 160: 1440p
+RESOLUTION = 160 # 120: 1080p / 160: 1440p
 FPS = 15 
-
 SIZEOFSNAKEELEMENT = RESOLUTION//SIZEOFMAP
 WHITE = (255,255,255)
 BLACK = (0,0,0)
-
-
 
 def start_game():
     global fps
@@ -32,16 +28,16 @@ def start_game():
     score = 0
     screen.blit(title_text, (RESOLUTION*3,RESOLUTION*3))
     screen.blit(start_text, (RESOLUTION*3,RESOLUTION*3 + RESOLUTION*1.5))
-    add_food(1)
+    food_position = add_food(food_position, 1)
     pg.display.update()
 
 def rand_tile():
     return [2+round(random.random()*(SIZEOFMAP*16-4)),2+round(random.random()*(SIZEOFMAP*9-4))]
 
-def add_food(a):
-    global food_position
+def add_food(food_position, a): 
     for _ in range(a):
         food_position.append(rand_tile())
+    return food_position
 
 def grow(snake_position):
     global score
@@ -50,11 +46,6 @@ def grow(snake_position):
     return snake_position
 
 def render():
-    global snake_element
-    global snake_position
-    global food_element
-    global food_position
-    global score
     screen.fill(BLACK)
     for se in snake_position:
         screen.blit(snake_element, (se[0]*SIZEOFSNAKEELEMENT,se[1]*SIZEOFSNAKEELEMENT))  
@@ -64,16 +55,17 @@ def render():
     screen.blit(score_text, (10,10))
     pg.display.flip()
 
-def tile_check(snake_position):
+def tile_check():
+    global food_position
+    global snake_position
     if snake_position[0] in snake_position[1:]: start_game()
     elif snake_position[0] in food_position: 
-        snake_position = grow(snake_position) 
+        snake_position = grow(snake_position)
         food_position.remove(snake_position[0])
-        add_food(1)
-        
+        food_position = add_food(food_position, 1)
 
 def buttons_check():
-    global snake_direction
+    global snake_position
     global snake_direction
     global fps
     global exited
@@ -94,7 +86,8 @@ def buttons_check():
     if snake_direction != switch_snake_direction_to and (snake_direction - switch_snake_direction_to)%2 != 0:
         snake_direction = switch_snake_direction_to
 
-def move_snake(snake_position,snake_direction): 
+def move_snake():
+    global snake_position
     if len(snake_position) > 1:
         for current_element in range(len(snake_position)-1,0,-1):
             snake_position[current_element] = snake_position[current_element-1][:]
@@ -104,18 +97,15 @@ def move_snake(snake_position,snake_direction):
         case 2: snake_position[0][0] += -1
         case 3: snake_position[0][1] += -1
     snake_position[0][0],snake_position[0][1] = snake_position[0][0]%(SIZEOFMAP*16),snake_position[0][1]%(SIZEOFMAP*9)
-    return snake_position
 
 class previous_results:
     def get_best_score():
-        global file
         maxs = 0
         file.seek(0)
         for lines in file.readlines():
             maxs = max(maxs,int(lines))
         return maxs
     def max_score(current_score):
-        global file
         global maxscore 
         file.write(str(current_score)+'\n')
         maxscore = max(current_score,maxscore)
@@ -139,7 +129,6 @@ score = 0
 exited = False
 maxscore = previous_results.get_best_score()
 
-
 start_game()
 while not exited:
     while not running and not exited:
@@ -147,11 +136,11 @@ while not exited:
             if event.type == pg.QUIT or event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE: exited = True
             if event.type == pg.KEYDOWN: running = True
         clock.tick(FPS)
-
+        
     while running and not exited:
         buttons_check()
-        snake_position = move_snake(snake_position, snake_direction)
-        tile_check(snake_position)
+        move_snake()
+        tile_check()
         if running: render()
         clock.tick(fps)
 
