@@ -164,6 +164,19 @@ class Page: # parent class for pages
     def render_page(self): raise Exception('render_page() method not implemented in a subclass')
 
 
+    def __init__(self, title, options): -> None:
+        title_text = Text(10, TTL_TEXT_CLR, title) 
+        for current_text in range(len(options)):
+            
+
+
+
+
+
+
+
+
+
 class TitlePage(Page):
     def __init__(self) -> None:
         self.title_text = Text(20, TTL_TEXT_CLR,'The snake game v.5')
