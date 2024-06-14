@@ -1,0 +1,109 @@
+{
+    "global": {
+        "metainfo": {
+            "TITLE": "The snake game v6",
+            "buttons": [
+                "up",
+                "right",
+                "left",
+                "down",
+                "quit",
+                "grow",
+                "die"
+            ],
+            "numbers": [
+                "size_of_a_map",
+                "resolution",
+                "fps",
+                "num_of_local_players"
+            ],
+            "tuples": [
+                "color"
+            ],
+            "boolians": [
+                "debug_mode"
+            ],
+            "text": [
+                "name"
+            ]
+        },
+        "options": {
+            "debug_mode": true,
+            "size_of_a_map": 5,
+            "resolution": 120,
+            "fps": 15,
+            "num_of_local_players": 2
+        },
+        "controls": {
+            "quit": 27,
+            "grow": 101,
+            "die": 113
+        }
+    },
+    "players": [
+        {
+            "options": {
+                "name": "xopp3r",
+                "color": [
+                    200,
+                    0,
+                    200
+                ]
+            },
+            "controls": {
+                "up": 119,
+                "right": 100,
+                "left": 97,
+                "down": 115
+            }
+        },
+        {
+            "options": {
+                "name": "Jack (2)",
+                "color": [
+                    0,
+                    0,
+                    255
+                ]
+            },
+            "controls": {
+                "up": 1073741906,
+                "right": 1073741903,
+                "left": 1073741904,
+                "down": 1073741905
+            }
+        },
+        {
+            "options": {
+                "name": "Vlad (3)",
+                "color": [
+                    0,
+                    255,
+                    0
+                ]
+            },
+            "controls": {
+                "up": 1073741920,
+                "right": 1073741918,
+                "left": 1073741916,
+                "down": 1073741917
+            }
+        },
+        {
+            "options": {
+                "name": "Nick (4)",
+                "color": [
+                    255,
+                    0,
+                    0
+                ]
+            },
+            "controls": {
+                "up": 116,
+                "right": 104,
+                "left": 102,
+                "down": 103
+            }
+        }
+    ]
+}
