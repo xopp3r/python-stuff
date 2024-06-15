@@ -418,9 +418,27 @@ class SettingsPage(Page):
 
     def change(self, link):
         if link == None:
-            return 0
+            return 
         if link == 'new':
-            print('creating new profile..') # todo
+            config.settings["players"].append({
+            "options": {
+                "name": "noname",
+                "color": [
+                    100,
+                    100,
+                    100
+                ]
+            },
+            "controls": {
+                "up": 0,
+                "right": 0,
+                "left": 0,
+                "down": 0
+            }})
+            config.save()
+            config.update()
+            self.update_text()
+            return
         pageManager.settingsChangePage.start(link) 
 
     def render_page(self):
